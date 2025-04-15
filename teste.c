@@ -67,16 +67,22 @@ int proxID(const char* pacientes){
     return maiorID + 1;
     // Próximo ID é o maior ID + 1
 }
-/*
+
 void ListagemAtendimentos(){
     FILE*arquivo = fopen("pacientes.txt", "r");
     if(arquivo == NULL){return;}
 
+    Paciente x;
 
+
+    while (fscanf(arquivo, "%d , %99[^,] , %10[^,] , %9[^\n]", &x.identificador, x.nome, x.data, x.horario) == 4) {
+        printf("ID: %d | Nome: %s | Data: %s | Horário: %s\n", x.identificador, x.nome, x.data, x.horario);
+    }
+    fclose(arquivo);
 }
-*/
+
 //função para novo cadastrado
-void agendaAtendimtento(){
+void agendaAtendimento(){
     //[2]Comentário acima no cabeçalho
     FILE*arquivo = fopen("pacientes.txt", "a");
     if(arquivo == NULL){
@@ -84,7 +90,13 @@ void agendaAtendimtento(){
         return;
     }
 
+
+
     Paciente x;
+    if (strchr(x.data, '\n') == NULL) {
+        int ch;
+        while ((ch = getchar()) != '\n' && ch != EOF);
+    }
     //[3]comentário acima no cabeçalho
 
     //gera o identificador do paciente automaticamente
@@ -135,6 +147,35 @@ void agendaAtendimtento(){
 
 
 int main(void){
-    agendaAtendimtento();
+    int op = 0;
+
+    do{
+    printf("escolha a operação a ser exercida:\n");
+    printf("1-Agendamento\n2-Lista de Consultas\n3 - sair\n");
+    scanf("%i", &op);
+    switch(op){
+        case 1:
+        printf("--- Cadastro de Consulta --- \n");
+        agendaAtendimento();
+        break;
+
+        case 2:
+        printf("--- Listagem de consultas ---\n");
+        ListagemAtendimentos();
+        break;
+
+        case 3:
+        exit(EXIT_SUCCESS);
+        break;
+
+        default:
+        printf("operação inválida");
+        break;
+    }
+    }
+
+    while(op != 3 );
     return 0;
+ 
+
 }
